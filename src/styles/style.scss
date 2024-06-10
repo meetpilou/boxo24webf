@@ -1,0 +1,15 @@
+.swiper-cover_categories_item{
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
+  gap: 0;
+}
+
+.swiper-cover_categories_item:not(:last-of-type) {
+  &::after {
+    content: ",";
+    margin-right: 0.2rem;
+    display: block;
+    opacity: 0.4;
+  }
+}

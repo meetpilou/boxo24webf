@@ -1,0 +1,8 @@
+{
+  "src/script.js": {
+    "file": "script.js",
+    "name": "script",
+    "src": "src/script.js",
+    "isEntry": true
+  }
+}

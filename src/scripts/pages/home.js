@@ -1,6 +1,6 @@
+import Page from '../classes/page.js'
 import SwiperCover from '../components/swiper-cover.js'
 import SwiperImages from '../components/swiper-images.js'
-import Page from '../core/page.js'
 
 class Home extends Page {
   constructor() {
@@ -19,10 +19,10 @@ class Home extends Page {
   _createSliders() {
     this.logger.log('_createSlider')
 
-    this.swiperCover = new SwiperCover()
+    this.swiperCover = new SwiperCover({ speed: 2000, delay: 7000 })
     this.swiperCover.init()
 
-    this.swiperImages = new SwiperImages()
+    this.swiperImages = new SwiperImages({ speed: 5000, delay: 4000 })
     this.swiperImages.init()
   }
 }

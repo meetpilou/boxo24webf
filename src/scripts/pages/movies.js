@@ -1,4 +1,4 @@
-import Page from '../core/page.js'
+import Page from '../classes/page.js'
 
 class Movies extends Page {}
 

@@ -4,13 +4,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SplitText } from 'gsap/SplitText'
 import Lenis from 'lenis'
 
-import Logger from './core/logger.js'
+import { Breakpoints } from './core'
 import About from './pages/about.js'
 import Facilities from './pages/facilities.js'
 import Home from './pages/home.js'
 import Movies from './pages/movies.js'
 import NewsSlug from './pages/news-slug.js'
 import News from './pages/news.js'
+import Logger from './utils/logger.js'
 
 gsap.registerPlugin(ScrollTrigger, SplitText, CSSPlugin)
 
@@ -24,12 +25,17 @@ class App {
       news: News,
       newsSlug: NewsSlug,
     }
+    // Config
     this.version = '1.0.0'
     this.environment = 'editor'
     this.logger = new Logger('App')
+    this.breakpoints = new Breakpoints()
+
     this.page = null
     this.component = null
   }
+
+  /* GETTERS */
 
   /* PUBLIC METHODS  */
 

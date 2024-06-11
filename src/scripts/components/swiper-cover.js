@@ -7,16 +7,17 @@ import {
   getDefaultTimeline,
   getTweenSlideUp,
   getTweenTitleText,
-} from '../core/gsap-utils.js'
-import Logger from '../core/logger.js'
+} from '../utils/gsap.js'
+import Logger from '../utils/logger.js'
 
 class SwiperCover {
-  constructor(speed = 2000) {
+  constructor({ delay = 5000, speed = 2000 }) {
     this.element = document.querySelector('.swiper-cover')
     this.logger = new Logger('SwiperCover')
     this.activeSlide = null
     this.oldSlide = null
     this.speed = speed
+    this.delay = delay
     this.swiper = null
     this.slides = []
   }
@@ -40,7 +41,7 @@ class SwiperCover {
       draggable: false,
       simulateTouch: false,
       autoplay: {
-        delay: 5000,
+        delay: this.delay,
       },
       loop: true,
       speed: this.speed,
@@ -68,7 +69,6 @@ class SwiperCover {
   _animate(direction = 'next') {
     this.logger.log('_animate', direction)
     this._animateActiveSlide()
-    // this._animateOldSlide(direction)
   }
 
   _animateActiveSlide() {
@@ -76,7 +76,7 @@ class SwiperCover {
     const DOM = this._getDOM(activeSlide)
     const split = this._createSplitTitle(DOM.title)
     const timeline = this._createTimeline(DOM, split, {
-      delay: 1.5,
+      delay: 2,
       onComplete: () => {
         // split.revert()
         this._clearDOM(DOM)
@@ -85,32 +85,14 @@ class SwiperCover {
     timeline.play()
   }
 
-  _animateOldSlide(direction = 'next') {
-    const oldSlide =
-      direction === 'next'
-        ? this.element.querySelector('.swiper-slide-prev')
-        : this.element.querySelector('.swiper-slide-next')
-
-    const DOM = this._getDOM(oldSlide)
-    const split = this._createSplitTitle(DOM.title)
-    const timeline = this._createTimeline(DOM, split, {
-      delay: 0,
-      onReverseComplete: () => {
-        split.revert()
-        this._clearDOM(DOM)
-      },
-    })
-    timeline.reverse(0)
-  }
-
   _createTimeline(DOM, split, args = {}) {
     const timeline = getDefaultTimeline(args)
-      .from(...getTweenTitleText(split), 0)
-      .from(...getTweenSlideUp(DOM.info), 0.3)
-      .from(...getTweenSlideUp(DOM.creator), 0.3)
-      .from(...getTweenSlideUp(DOM.producer), 0.4)
-      .from(...getTweenSlideUp(DOM.badges), 0.4)
-      .from(...getTweenSlideUp(DOM.categories), 0.5)
+      .from(...getTweenTitleText(split, { duration: 1.5 }), 0)
+      .from(...getTweenSlideUp(DOM.info, { duration: 1.5 }), 0.3)
+      .from(...getTweenSlideUp(DOM.creator, { duration: 1.5 }), 0.3)
+      .from(...getTweenSlideUp(DOM.producer, { duration: 1.5 }), 0.4)
+      .from(...getTweenSlideUp(DOM.badges, { duration: 1.5 }), 0.4)
+      .from(...getTweenSlideUp(DOM.categories, { duration: 1.5 }), 0.5)
     return timeline
   }
 

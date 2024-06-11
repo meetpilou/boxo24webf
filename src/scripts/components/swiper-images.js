@@ -1,17 +1,18 @@
 import Swiper from 'swiper'
 import { Autoplay } from 'swiper/modules'
 
-import Logger from '../core/logger.js'
+import Logger from '../utils/logger.js'
 import SwiperGL from '../vendors/swiper-gl.esm.js'
 
 import '../../styles/swiper-gl.scss'
 
 class SwiperImages {
-  constructor(speed = 2000) {
+  constructor({ delay = 5000, speed = 2000 }) {
     this.element = document.querySelector('.swiper-cover-images')
     this.logger = new Logger('SwiperImages')
     this.swiper = null
     this.speed = speed
+    this.delay = delay
   }
 
   /* PUBLIC METHODS */
@@ -32,7 +33,7 @@ class SwiperImages {
       // draggable: false,
       // simulateTouch: false,
       autoplay: {
-        delay: 5000,
+        delay: this.delay,
       },
       loop: true,
       speed: this.speed,

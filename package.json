@@ -5,7 +5,7 @@
   "author": "Pierre Lovenfosse <hello@meetpilou.com>",
   "type": "module",
   "scripts": {
-    "dev": "vite --port 3000",
+    "dev": "vite --port 4000",
     "build": "vite build",
     "preview": "vite preview",
     "clean": "rimraf -rf dist",

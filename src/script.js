@@ -3,9 +3,9 @@ import './styles/style.scss'
 
 const mount = () => {
   const app = new App()
-  app.init()
-  app.logger.log(window.Webflow)
   window.app = app
+  app.logger.log(Webflow)
+  app.init()
 }
 
 window.addEventListener('DOMContentLoaded', mount)

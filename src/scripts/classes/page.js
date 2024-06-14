@@ -7,6 +7,11 @@ class Page {
     this.name = name
     this.DOM = {}
     this.logger = new Logger(`Page ${this.name}`)
+
+    this._onLoad = this._onLoad.bind(this)
+    this._onDOMContentLoaded = this._onDOMContentLoaded.bind(this)
+    this._onResize = this._onResize.bind(this)
+
     this._setEventListeners()
   }
 

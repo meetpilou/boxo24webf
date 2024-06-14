@@ -1,51 +1,46 @@
 import Swiper from 'swiper'
-import { Autoplay } from 'swiper/modules'
+import { Autoplay, EffectFade } from 'swiper/modules'
 
-import Logger from '../utils/logger.js'
+import CustomSwiper from '../classes/custom-swiper.js'
 import SwiperGL from '../vendors/swiper-gl.esm.js'
 
 import '../../styles/swiper-gl.scss'
 
-class SwiperImages {
+class SwiperImages extends CustomSwiper {
   constructor({ delay = 5000, speed = 2000 }) {
-    this.element = document.querySelector('.swiper-cover-images')
-    this.logger = new Logger('SwiperImages')
-    this.swiper = null
-    this.speed = speed
-    this.delay = delay
+    super({
+      name: 'SwiperImages',
+      selector: '.swiper-cover-images',
+      delay,
+      speed,
+    })
   }
 
   /* PUBLIC METHODS */
 
-  init() {
-    this.logger.log('init')
-    this._createSwiper()
-  }
-
-  /* PRIVATE METHODS */
-
-  _createSwiper() {
-    this.logger.log('_createSwiper')
+  create() {
+    super.create()
     this.swiper = new Swiper(this.element, {
       init: false,
       centeredSlides: true,
       slidesPerView: 1,
-      // draggable: false,
-      // simulateTouch: false,
+      draggable: false,
+      simulateTouch: false,
       autoplay: {
         delay: this.delay,
+        disableOnInteraction: false,
       },
       loop: true,
       speed: this.speed,
       pagination: false,
-      modules: [Autoplay, SwiperGL],
-      effect: 'gl',
+      modules: [Autoplay, SwiperGL, EffectFade],
+      effect: app.core.isDesktop ? 'gl' : 'fade',
+      fadeEffect: app.core.isDesktop ? null : { crossFade: true },
       gl: {
         shader: 'morph-x',
       },
     })
     this.swiper.init()
-    this.swiper.autoplay.start()
   }
 }
 

@@ -1,5 +1,10 @@
 @import "./modules/responsive-font";
 
+.grid-system{
+  display: none;
+  visibility: hidden;
+}
+
 .swiper-cover_categories_item{
   display: flex;
   justify-content: flex-start;

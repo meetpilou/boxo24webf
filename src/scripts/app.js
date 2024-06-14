@@ -2,18 +2,20 @@ import { gsap } from 'gsap'
 import { CSSPlugin } from 'gsap/CSSPlugin'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SplitText } from 'gsap/SplitText'
-import Lenis from 'lenis'
+import { TextPlugin } from 'gsap/TextPlugin'
 
-import { Breakpoints } from './core'
+import Menu from './components/menu.js'
+import Core from './core.js'
 import About from './pages/about.js'
 import Facilities from './pages/facilities.js'
 import Home from './pages/home.js'
 import Movies from './pages/movies.js'
 import NewsSlug from './pages/news-slug.js'
 import News from './pages/news.js'
+import Translations from './translations.js'
 import Logger from './utils/logger.js'
 
-gsap.registerPlugin(ScrollTrigger, SplitText, CSSPlugin)
+gsap.registerPlugin(ScrollTrigger, SplitText, CSSPlugin, TextPlugin)
 
 class App {
   constructor() {
@@ -25,14 +27,14 @@ class App {
       news: News,
       newsSlug: NewsSlug,
     }
-    // Config
-    this.version = '1.0.0'
-    this.environment = 'editor'
-    this.logger = new Logger('App')
-    this.breakpoints = new Breakpoints()
 
     this.page = null
     this.component = null
+
+    this.core = new Core({ version: '1.0.0' })
+    this.menu = new Menu()
+    this.translations = new Translations()
+    this.logger = new Logger('App')
   }
 
   /* GETTERS */
@@ -40,51 +42,21 @@ class App {
   /* PUBLIC METHODS  */
 
   init() {
-    this._setStates()
-    this._setConfiguration()
+    this.core.init()
+    this.menu.init()
+    this._setPageAndComponent()
   }
 
   /* PRIVATE METHODS */
 
-  _setStates() {
-    this.environment =
-      window.Webflow && window.Webflow.env('editor')
-        ? 'editor'
-        : window.Webflow && window.Webflow.env('design')
-        ? 'designer'
-        : 'production'
-
-    this.logger.log(`Environment: ${this.environment}`)
-  }
-
-  _setConfiguration() {
+  _setPageAndComponent() {
     const pageName = document.body.dataset.page
 
     this.page = pageName
     this.component = new this.pages[pageName]()
     this.component.init()
 
-    if (this.environment === 'production') {
-      this._setLenis()
-      this._setGsap()
-    }
-
     this.logger.log('App initialized')
-  }
-
-  _setLenis() {
-    this.lenis = new Lenis({
-      duration: 1.1,
-      easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -13 * t)),
-    })
-    this.lenis.on('scroll', ScrollTrigger.update)
-  }
-
-  _setGsap() {
-    gsap.ticker.add((time) => {
-      this.lenis.raf(time * 1000)
-    })
-    gsap.ticker.lagSmoothing(0)
   }
 
   _setPageTransition() {

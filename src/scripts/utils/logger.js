@@ -3,6 +3,8 @@ class Logger {
     this.name = name ?? 'Logger'
   }
 
+  /* PUBLIC METHODS */
+
   log(message) {
     console.log(`[${this.name}] =>`, message)
   }

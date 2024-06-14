@@ -23,7 +23,8 @@ export default defineConfig({
         esModule: false,
         compact: true,
         globals: {
-          jquery: '$',
+          app: 'window.app',
+          'Webflow': 'window.Webflow',
         },
       },
       external: ['jquery'],

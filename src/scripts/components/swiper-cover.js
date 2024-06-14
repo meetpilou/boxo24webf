@@ -1,38 +1,31 @@
-import { gsap } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
 import Swiper from 'swiper'
 import { Autoplay, EffectFade } from 'swiper/modules'
 
+import CustomSwiper from '../classes/custom-swiper.js'
 import {
   getDefaultTimeline,
   getTweenSlideUp,
   getTweenTitleText,
 } from '../utils/gsap.js'
-import Logger from '../utils/logger.js'
 
-class SwiperCover {
-  constructor({ delay = 5000, speed = 2000 }) {
-    this.element = document.querySelector('.swiper-cover')
-    this.logger = new Logger('SwiperCover')
+class SwiperCover extends CustomSwiper {
+  constructor({ delay = 5000, speed = 2000, animationDelay = 2000 }) {
+    super({
+      name: 'SwiperCover',
+      selector: '.swiper-cover',
+      delay,
+      speed,
+      animationDelay,
+    })
     this.activeSlide = null
     this.oldSlide = null
-    this.speed = speed
-    this.delay = delay
-    this.swiper = null
-    this.slides = []
   }
 
   /* PUBLIC METHODS */
 
-  init() {
-    this.logger.log('init')
-    this._createSwiper()
-    this._setSwiperEvents()
-  }
-
-  /* PRIVATE METHODS */
-
-  _createSwiper() {
+  create() {
+    super.create()
     this.logger.log('_createSwiper')
     this.swiper = new Swiper(this.element, {
       init: false,
@@ -42,6 +35,7 @@ class SwiperCover {
       simulateTouch: false,
       autoplay: {
         delay: this.delay,
+        disableOnInteraction: false,
       },
       loop: true,
       speed: this.speed,
@@ -51,9 +45,6 @@ class SwiperCover {
       fadeEffect: { crossFade: true },
     })
     this.swiper.init()
-  }
-
-  _setSwiperEvents() {
     this.swiper.on('slideNextTransitionStart', () => {
       this.logger.log('slideNextTransitionStart')
       this._animate('next')
@@ -64,7 +55,14 @@ class SwiperCover {
     })
   }
 
-  // ANIMATE
+  update() {
+    const activeSlide = this.element.querySelector('.swiper-slide-active')
+    const DOM = this._getDOM(activeSlide)
+    this._clearDOM(DOM)
+    super.update()
+  }
+
+  /* PRIVATE METHODS */
 
   _animate(direction = 'next') {
     this.logger.log('_animate', direction)
@@ -76,9 +74,8 @@ class SwiperCover {
     const DOM = this._getDOM(activeSlide)
     const split = this._createSplitTitle(DOM.title)
     const timeline = this._createTimeline(DOM, split, {
-      delay: 2,
+      delay: this.animationDelay / 1000,
       onComplete: () => {
-        // split.revert()
         this._clearDOM(DOM)
       },
     })
@@ -112,14 +109,6 @@ class SwiperCover {
       badges: slide.querySelector('[data-slide-badges]'),
       categories: slide.querySelector('[data-slide-categories]'),
     }
-  }
-
-  _clearDOM(DOM) {
-    Object.keys(DOM).forEach((key) => {
-      gsap.set(DOM[key], {
-        clearProps: 'all',
-      })
-    })
   }
 
   _inverseSplit(split) {

@@ -5,7 +5,8 @@ import SwiperImages from '../components/swiper-images.js'
 class Home extends Page {
   constructor() {
     super('home')
-    this.slider = null
+    this.swiperCover = null
+    this.swiperImages = null
   }
 
   /* PUBLIC METHODS */
@@ -18,12 +19,25 @@ class Home extends Page {
 
   _createSliders() {
     this.logger.log('_createSlider')
-
-    this.swiperCover = new SwiperCover({ speed: 2000, delay: 7000 })
+    this.swiperCover = new SwiperCover({
+      speed: 1000,
+      delay: 6000,
+      animationDelay: 1000,
+    })
     this.swiperCover.init()
 
-    this.swiperImages = new SwiperImages({ speed: 5000, delay: 4000 })
+    this.swiperImages = new SwiperImages({ speed: 2000, delay: 5000 })
     this.swiperImages.init()
+  }
+
+  _onResize() {
+    this.swiperCover.update()
+    this.swiperImages.update()
+  }
+
+  _destroySwipers() {
+    this.swiperCover.destroy()
+    this.swiperImages.destroy()
   }
 }
 

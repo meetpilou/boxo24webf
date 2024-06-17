@@ -32,7 +32,7 @@ class App {
     this.component = null
 
     this.core = new Core({ version: '1.0.0' })
-    this.menu = new Menu()
+    this.menu = new Menu('[data-navigation]')
     this.translations = new Translations()
     this.logger = new Logger('App')
   }

@@ -2,6 +2,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from 'lenis'
 
+import GridSystem from './components/grid-system'
 import Logger from './utils/logger'
 
 class Core {
@@ -10,6 +11,7 @@ class Core {
     this.environment = null
     this.gsap = null
     this.lenis = null
+    this.gridsystem = null
     this.version = version
     this.language = 'en'
     this.logger = new Logger('App')
@@ -22,6 +24,7 @@ class Core {
     this._createEnvironment()
     this._createLenis()
     this._createGsap()
+    this._createGridSystem()
     this._getLanguage()
 
     this.logger.log('Core initialized')
@@ -61,6 +64,12 @@ class Core {
       })
       gsap.ticker.lagSmoothing(0)
     }
+  }
+
+  _createGridSystem() {
+    const element = document.querySelector('[data-grid-system]')
+    this.gridsystem = new GridSystem(element)
+    this.gridsystem.init()
   }
 
   _getLanguage() {

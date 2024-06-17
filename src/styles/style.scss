@@ -5,6 +5,11 @@
   visibility: hidden;
 }
 
+.js-tilt-glare-inner{
+  width: 200% !important;
+  height: 200% !important;
+}
+
 .swiper-cover_categories_item{
   display: flex;
   justify-content: flex-start;
@@ -20,3 +25,5 @@
     opacity: 0.4;
   }
 }
+
+

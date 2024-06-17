@@ -29,7 +29,8 @@
     "lodash": "^4.17.21",
     "ogl": "^1.0.7",
     "simplex-noise": "^4.0.1",
-    "swiper": "^11.1.4"
+    "swiper": "^11.1.4",
+    "vanilla-tilt": "^1.8.1"
   },
   "packageManager": "yarn@4.2.2"
 }

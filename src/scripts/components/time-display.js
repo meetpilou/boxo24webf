@@ -1,16 +1,20 @@
-class TimeDisplay {
+import Component from '../classes/component'
+
+class TimeDisplay extends Component {
   constructor(selector) {
-    this.element = document.querySelector(selector)
+    super({ name: 'TimeDisplay', selector })
     this.interval = null
   }
 
   init() {
+    super.init()
     this.interval = setInterval(() => {
       this._updateTime()
     })
   }
 
   destroy() {
+    super.destroy()
     clearInterval(this.interval)
     this.element.innerHTML = '00:00'
   }

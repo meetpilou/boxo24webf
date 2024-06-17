@@ -5,27 +5,31 @@ import { getDefaultTimeline } from '../utils/gsap.js'
 import Logger from '../utils/logger.js'
 
 class Menu {
-  constructor() {
-    this.element = document.querySelector('[data-nav-bar]')
+  constructor(selector) {
     this.time = null
     this.logger = new Logger('Menu')
     this.isOpened = false
     this.timelineOpen = null
     this.timelineClose = null
     this.startPos = '105%'
+
     this.DOM = {
-      trigger: null,
-      time: null,
-      socials: null,
-      items: [],
+      element: document.querySelector(selector),
       addresses: [],
+      items: [],
+      menu: null,
+      socials: null,
+      texts: null,
+      time: null,
+      trigger: null,
+      triggerText: null,
     }
   }
 
   /* PUBLIC METHODS */
 
   init() {
-    this._getDom(this.element)
+    this._getDom()
     this._initDom()
     /* Time */
     this.time = new TimeDisplay('[data-nav-time]')
@@ -49,6 +53,7 @@ class Menu {
         {
           duration: 1,
           width: '0',
+          // height: '0',
           minWidth: '0rem',
           ease: 'power2.in',
         },
@@ -64,6 +69,21 @@ class Menu {
         0.4
       )
       .to(this.DOM.triggerText, { text: app.translations.current['menu'] }, 0.5)
+      .to(
+        this.DOM.items,
+        { opacity: 0, y: -10, stagger: 0.1, duration: 0.5, ease: 'power3.in' },
+        0
+      )
+      .to(
+        this.DOM.addresses,
+        { opacity: 0, x: -5, stagger: 0.1, duration: 0.5, ease: 'power3.in' },
+        0
+      )
+      .to(
+        this.DOM.socials,
+        { opacity: 0, x: 5, stagger: 0.1, duration: 0.5, ease: 'power3.in' },
+        0
+      )
   }
 
   _createTimelineOpen() {
@@ -74,17 +94,15 @@ class Menu {
           duration: 1,
           width: '25vw',
           minWidth: '26.25rem',
+          // height: 'auto',
           ease: 'power2.out',
         },
         0
       )
+
       .to(
         this.DOM.texts,
-        {
-          duration: 0.5,
-          autoAlpha: 0,
-          ease: 'power2.out',
-        },
+        { duration: 0.5, autoAlpha: 0, ease: 'power3.out' },
         0
       )
       .to(
@@ -99,36 +117,35 @@ class Menu {
       )
       .from(
         this.DOM.addresses,
-        { opacity: 0, x: -5, stagger: 0.2, duration: 1, ease: 'power2.out' },
+        { opacity: 0, x: -5, stagger: 0.2, duration: 1, ease: 'power3.out' },
         1
       )
       .from(
         this.DOM.socials,
-        { opacity: 0, x: 5, stagger: 0.15, duration: 0.5, ease: 'power2.out' },
+        { opacity: 0, x: 5, stagger: 0.15, duration: 0.5, ease: 'power3.out' },
         1.2
       )
   }
 
-  _getDom(parent) {
-    this.DOM = {
-      trigger: parent.querySelector('[data-nav-trigger]'),
-      triggerText: parent.querySelector('[data-nav-trigger] .button-nav_text'),
-      menu: parent.querySelector('[data-nav-menu]'),
-      texts: parent.querySelector('[data-nav-texts]'),
-      socials: parent.querySelector('[data-nav-socials]'),
-      items: parent.querySelectorAll('[data-nav-item]'),
-      addresses: parent.querySelectorAll('[data-nav-address]'),
-    }
+  _getDom() {
+    this.DOM.addresses = this.DOM.element.querySelectorAll('[data-nav-address]')
+    this.DOM.items = this.DOM.element.querySelectorAll('[data-nav-item]')
+    this.DOM.menu = this.DOM.element.querySelector('[data-nav-menu]')
+    this.DOM.socials = this.DOM.element.querySelectorAll('[data-nav-socials]')
+    this.DOM.texts = this.DOM.element.querySelectorAll('[data-nav-texts]')
+    this.DOM.trigger = this.DOM.element.querySelector('[data-nav-trigger]')
+    this.DOM.triggerText = this.DOM.element.querySelector(
+      '[data-nav-trigger] .button-nav_text'
+    )
   }
 
   _initDom() {
     gsap.set(this.DOM.menu, {
-      // css: { display: 'flex', transform: `translateX(${this.startPos})` },
       css: {
-        display: 'flex',
+        display: 'block',
         width: '0',
+        // height: '0',
         minWidth: '0rem',
-        // overflow: 'hidden',
       },
     })
   }

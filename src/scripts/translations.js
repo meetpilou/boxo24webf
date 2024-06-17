@@ -3,10 +3,12 @@ class Translations {
     this.en = {
       menu: 'Menu',
       close: 'Close',
+      view_our_projects: 'View our projects',
     }
     this.fr = {
       menu: 'Menu',
       close: 'Fermer',
+      view_our_projects: 'Voir nos projets',
     }
   }
 
